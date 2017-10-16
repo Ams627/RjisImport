@@ -69,10 +69,11 @@ namespace RjisImport
 
         public static string GetDays(string line, int pos)
         {
-            if (line.Substring(pos, 7).Any(x=>x != 'Y' || x != 'N'))
+            if (line.Substring(pos, 7).Any(x => x != 'Y' && x != 'N'))
             {
                 throw new Exception($"Invalid day string: must contain only Y or N - found {line.Substring(pos, 7)}");
             }
             return line.Substring(pos, 7);
         }
     }
+}
