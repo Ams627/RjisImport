@@ -75,5 +75,19 @@ namespace RjisImport
             }
             return line.Substring(pos, 7);
         }
+        public static int GetInt(string line, int pos, int length)
+        {
+            int result = 0;
+            foreach (var c in line.Substring(pos, length))
+            {
+                if (!char.IsDigit(c))
+                {
+                    throw new Exception($"Invalid character in integer - found {c}");
+                }
+                result = 10 * result + c - '0';
+            }
+            return result;
+        }
+
     }
 }

@@ -12,6 +12,7 @@ namespace RjisImport
     {
         static TLVExporters.Restrictions.RhList rhList = new TLVExporters.Restrictions.RhList();
         static TLVExporters.Restrictions.SdList sdList = new TLVExporters.Restrictions.SdList();
+        static TLVExporters.Restrictions.TtList ttList = new TLVExporters.Restrictions.TtList();
 
         private static void Main(string[] args)
         {
@@ -29,6 +30,9 @@ namespace RjisImport
                             break;
                         case "SD":
                             sdList.AddLine(line);
+                            break;
+                        case "TT":
+                            ttList.AddLine(line);
                             break;
                         default:
                             break;

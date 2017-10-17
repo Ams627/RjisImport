@@ -38,4 +38,21 @@ namespace RjisImport.TLVExporters.Restrictions
         }
     }
 
+    public class TtList : ITlvSerialisable
+    {
+        [Tlv(TlvTypes.UInt, TlvTags.ID_RESTRICTION_TT_NUMERO_VERSION)] public int Version { get; set; } = 0;
+        [Tlv(TlvTypes.String, TlvTags.ID_RESTRICTION_TT_IAP)] public string Iap { get; set; } = "ParkeonTVM";
+        [Tlv(TlvTypes.Array, TlvTags.ID_RESTRICTION_TT_DESC)] public List<Tt> List { get; set; }
+
+        public TtList()
+        {
+            List = new List<Tt>();
+        }
+        public void AddLine(string line)
+        {
+            List.Add(new Tt(line));
+        }
+
+    }
+
 }
