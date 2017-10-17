@@ -42,6 +42,13 @@ namespace RjisImport
                     rhList.Serialise(fs);
                 }
 
+                var sdTlvFilename = "RESTR_SD";
+                using (var fs = new FileStream(sdTlvFilename, FileMode.Create, FileAccess.Write))
+                {
+                    byte[] header = new UTF8Encoding(true).GetBytes("TLtV0100");
+                    fs.Write(header, 0, header.Length);
+                    sdList.Serialise(fs);
+                }
             }
             catch (Exception ex)
             {
@@ -49,7 +56,6 @@ namespace RjisImport
                 var progname = Path.GetFileNameWithoutExtension(codeBase);
                 Console.Error.WriteLine(progname + ": Error: " + ex.Message);
             }
-
         }
     }
 }
