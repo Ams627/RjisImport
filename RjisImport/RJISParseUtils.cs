@@ -35,6 +35,29 @@ namespace RjisImport
             }
             return c;
         }
+
+        public static char GetArriveDepartVia(string line, int pos)
+        {
+            char c = line[pos];
+            if (c != 'A' && c != 'D' && c != 'V')
+            {
+                throw new Exception($"Arrive/Depart/Via marker must be 'A', 'D' or 'V' - found '{c}'");
+            }
+            return c;
+        }
+
+        public static char GetActualOrRunningTime(string line, int pos)
+        {
+            char c = line[pos];
+            if (c != 'A' && c != 'T')
+            {
+                throw new Exception($"Actual/Running marker must be 'A' or 'T' - found '{c}'");
+            }
+            return c;
+        }
+
+
+
         public static bool GetYNAsBoolean(string line, int pos)
         {
             char c = line[pos];
@@ -55,6 +78,16 @@ namespace RjisImport
             return "" + c1 + c2;
         }
 
+        public static string GetCrsCode(string line, int pos)
+        {
+            string crs = line.Substring(pos, 3);
+            if (!crs.All(x=>char.IsUpper(x) || x == ' '))
+            {
+                throw new Exception($"Invalid CRS code: must be three letters or three spaces - found '{crs}'");
+            }
+            return crs;
+        }
+
         public static DateTime GetMMDD(string line, int pos)
         {
             if (!(line.Substring(pos, 4).All(char.IsDigit)))
@@ -66,6 +99,22 @@ namespace RjisImport
             var d = 10 * (line[pos + 2] - '0') + line[pos + 3] - '0';
             return new DateTime(y, m, d);
         }
+
+        public static DateTime GetHHMM(string line, int pos)
+        {
+            if (!(line.Substring(pos, 4).All(char.IsDigit)))
+            {
+                throw new Exception($"Invalid time - found {line.Substring(pos, 4)}");
+            }
+            var h = 10 * (line[pos] - '0') + line[pos + 1] - '0';
+            var m = 10 * (line[pos + 2] - '0') + line[pos + 3] - '0';
+            if (h > 23 || m > 59)
+            {
+                throw new Exception($"Invalid time - found {line.Substring(pos, 4)}");
+            }
+            return new DateTime(1970, 1, 1, h, m, 0);
+        }
+
 
         public static string GetDays(string line, int pos)
         {
