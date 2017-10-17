@@ -25,7 +25,7 @@ namespace RjisImport.TLVExporters.Restrictions
         [Tlv(TlvTypes.String, TlvTags.ID_RESTRICTION_RH_DESC_RTN)] public string DescReturn { get; set; }
         [Tlv(TlvTypes.String, TlvTags.ID_RESTRICTION_RH_TYPE_OUT)] public char TypeOut { get; set; }
         [Tlv(TlvTypes.String, TlvTags.ID_RESTRICTION_RH_TYPE_RTN)] public char TypeRtn { get; set; }
-        [Tlv(TlvTypes.UInt, TlvTags.ID_RESTRICTION_RH_CHANGE_IND)] public bool ChangeInd { get; set; }
+        [Tlv(TlvTypes.BoolToZeroOne, TlvTags.ID_RESTRICTION_RH_CHANGE_IND)] public bool ChangeInd { get; set; }
 
     }
 }
