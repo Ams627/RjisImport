@@ -52,6 +52,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RJISParseUtils.cs" />
+    <Compile Include="TLVExporters\Railcard.cs" />
     <Compile Include="TLVExporters\Restrictions\AllRestrictions.cs" />
     <Compile Include="TLVExporters\Restrictions\Ec.cs" />
     <Compile Include="TLVExporters\Restrictions\Ha.cs" />

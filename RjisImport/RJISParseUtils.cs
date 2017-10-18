@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -115,6 +116,31 @@ namespace RjisImport
             return new DateTime(1970, 1, 1, h, m, 0);
         }
 
+        /// <summary>
+        /// Return end start quote dates as a tuple.
+        /// </summary>
+        /// <param name="line">RJIS file input line</param>
+        /// <param name="pos">position on line of first character of end date</param>
+        /// <returns>A 3-tuple holding all three parsed dates as DateTimes</returns>
+        public static (DateTime, DateTime, DateTime) GetEndStartQuoteDates(string line, int pos)
+        {
+            bool res = DateTime.TryParseExact(line.Substring(pos, 8), "ddmmyyyy", CultureInfo.InvariantCulture,  DateTimeStyles.None, out var endDate);
+            if (!res)
+            {
+                throw new Exception($"Invalid end date string: found {line.Substring(pos, 8)}");
+            }
+            res = DateTime.TryParseExact(line.Substring(pos, 8), "ddmmyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var startDate);
+            if (!res)
+            {
+                throw new Exception($"Invalid start date string: found {line.Substring(pos + 8, 8)}");
+            }
+            res = DateTime.TryParseExact(line.Substring(pos, 8), "ddmmyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var quoteDate);
+            if (!res)
+            {
+                throw new Exception($"Invalid quote date string: found {line.Substring(pos + 16, 8)}");
+            }
+            return (endDate, startDate, quoteDate);
+        }
 
         public static string GetDays(string line, int pos)
         {
