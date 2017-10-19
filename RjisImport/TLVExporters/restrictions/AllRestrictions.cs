@@ -63,15 +63,39 @@ namespace RjisImport.TLVExporters.Restrictions
     {
         [Tlv(TlvTypes.UInt, TlvTags.ID_RESTRICTION_TR_NUMERO_VERSION)] public int Version { get; set; } = 0;
         [Tlv(TlvTypes.String, TlvTags.ID_RESTRICTION_TR_IAP)] public string Iap { get; set; } = "ParkeonTVM";
-        [Tlv(TlvTypes.Array, TlvTags.ID_RESTRICTION_TR_DESC)] public List<Tr> List { get; set; }
+        [Tlv(TlvTypes.Array, TlvTags.ID_RESTRICTION_TR_DESC)] public List<Tr> ElementList { get; set; }
 
+        ILookup<string, Tr> lookup;
+ 
         public TrList()
         {
-            List = new List<Tr>();
+            ElementList = new List<Tr>();
         }
         public void AddLine(string line)
         {
-            List.Add(new Tr(line));
+            if (line[0] == 'R')
+            {
+                ElementList.Add(new Tr(line));
+            }
+            else if (line[0] == 'D')
+            {
+                var tr = new Tr(line);
+                if (lookup.Contains(tr.Key))
+                {
+                    var result = lookup[tr.Key].First();
+                    result.IsDeleted = true;
+                }
+            }
+        }
+
+        void RemoveDeletedItems()
+        {
+            ElementList.RemoveAll(x => x.IsDeleted);
+        }
+        void BuildIndex()
+        {
+            lookup = ElementList.ToLookup(x=>x.Key);
+            var duplicates = lookup.Where(x => x.Count() > 1);
         }
     }
 }

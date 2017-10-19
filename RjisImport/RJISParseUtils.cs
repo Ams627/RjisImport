@@ -57,6 +57,15 @@ namespace RjisImport
             return c;
         }
 
+        public static char GetAdultChild(string line, int pos)
+        {
+            char c = line[pos];
+            if (c != 'A' && c != 'C')
+            {
+                throw new Exception($"Adult/Child marker must be 'A' or 'C' - found '{c}'");
+            }
+            return c;
+        }
 
 
         public static bool GetYNAsBoolean(string line, int pos)
@@ -77,6 +86,26 @@ namespace RjisImport
                 throw new Exception($"Invalid restriction code must be two alphanumerics - found '{"" + c1 + c2}'");
             }
             return "" + c1 + c2;
+        }
+
+        public static string GetRailcardCode(string line, int pos)
+        {
+            var code = line.Substring(pos, 3);
+            if (code != "   " || code.Any(x=>!char.IsLetterOrDigit(x)))
+            {
+                throw new Exception($"Invalid railcard code must be either all spaces or three alphanumeric characters : found {code}");
+            }
+            return code;
+        }
+
+        public static string GetThreeAlphaNumeric(string line, int pos)
+        {
+            var code = line.Substring(pos, 3);
+            if (code.Any(x => !char.IsLetterOrDigit(x)))
+            {
+                throw new Exception($"Invalid railcard code must be either all spaces or three alphanumeric characters : found {code}");
+            }
+            return code;
         }
 
         public static string GetCrsCode(string line, int pos)
@@ -114,6 +143,17 @@ namespace RjisImport
                 throw new Exception($"Invalid time - found {line.Substring(pos, 4)}");
             }
             return new DateTime(1970, 1, 1, h, m, 0);
+        }
+
+        public static DateTime GetDate(string line, int pos)
+        {
+            bool res = DateTime.TryParseExact(line.Substring(pos, 8), "ddmmyyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var date);
+
+            if (!res)
+            {
+                throw new Exception($"Invalid end date string: found {line.Substring(pos, 8)}");
+            }
+            return date;
         }
 
         /// <summary>

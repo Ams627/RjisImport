@@ -21,7 +21,15 @@ namespace RjisImport.TLVExporters.Restrictions
             RestrictionType = RJISParseUtils.GetActualOrRunningTime(line, 23);
             TrainType = line[24];
             MinFareFlag = RJISParseUtils.GetYNAsBoolean(line, 25);
+
+
+            Key = CfMarker + RestrictionCode + SeqNo + OutRet;
         }
+
+
+        public string Key { get;  private set; }
+        public bool IsDeleted { get; set; } = false;
+
         [Tlv(TlvTypes.String, TlvTags.ID_RESTRICTION_TR_CF_MKR)] public char CfMarker { get; set; }
         [Tlv(TlvTypes.String, TlvTags.ID_RESTRICTION_TR_CODE)] public string RestrictionCode { get; set; }
         [Tlv(TlvTypes.String, TlvTags.ID_RESTRICTION_TR_SEQUENCE_NO)] public int SeqNo { get; set; }

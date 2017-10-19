@@ -11,7 +11,32 @@ namespace RjisImport.TLVExporters
     {
         public Railcard(string line)
         {
+            RailcardCode = RJISParseUtils.GetRailcardCode(line, 0);
             (EndDate, StartDate, QuoteDate) = RJISParseUtils.GetEndStartQuoteDates(line, 3);
+            HolderType = RJISParseUtils.GetAdultChild(line, 27);
+            Description = line.Substring(28, 20);
+            RestrictedByIssue = RJISParseUtils.GetYNAsBoolean(line, 48);
+            RestrictedByArea = RJISParseUtils.GetYNAsBoolean(line, 49);
+            RestrictedByTrain = RJISParseUtils.GetYNAsBoolean(line, 50);
+            RestrictedByDate = RJISParseUtils.GetYNAsBoolean(line, 51);
+            RailcardMasterCode = RJISParseUtils.GetRailcardCode(line, 52);
+            MaxPassengers = RJISParseUtils.GetInt(line, 56, 3);
+            MinPassengers = RJISParseUtils.GetInt(line, 59, 3);
+            MaxHolders = RJISParseUtils.GetInt(line, 62, 3);
+            MinHolders = RJISParseUtils.GetInt(line, 65, 3);
+            MaxAccAdults = RJISParseUtils.GetInt(line, 68, 3);
+            MinAccAdults = RJISParseUtils.GetInt(line, 71, 3);
+            MaxAdults = RJISParseUtils.GetInt(line, 74, 3);
+            MinAdults = RJISParseUtils.GetInt(line, 77, 3);
+            MaxChildren = RJISParseUtils.GetInt(line, 80, 3);
+            MinChildren = RJISParseUtils.GetInt(line, 83, 3);
+            DiscountPrice = RJISParseUtils.GetInt(line, 94, 8);
+            ValidMonths = RJISParseUtils.GetInt(line, 102, 2);
+            ValidDays = RJISParseUtils.GetInt(line, 104, 2);
+            LastValidDate = RJISParseUtils.GetDate(line, 106);
+            CapriTicketCode = RJISParseUtils.GetThreeAlphaNumeric(line, 115);
+
+
         }
         [Tlv(TlvTypes.String, TlvTags.ID_RAILCARD_CODE)] public string RailcardCode { get; set; }
         [Tlv(TlvTypes.String, TlvTags.ID_RAILCARD_END_DATE)] public DateTime EndDate { get; set; }
